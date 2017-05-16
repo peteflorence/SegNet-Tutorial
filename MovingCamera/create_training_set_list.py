@@ -22,9 +22,9 @@ labels_match = ""
 
 
 def WritePairToFile(rgb_file_name, labels_file_name):
-	target.write(cwd + "/" + rgb_file_name)
+	target.write(cwd + "/train/" + rgb_file_name)
 	target.write(" ")
-	target.write(cwd + "/" + labels_file_name)
+	target.write(cwd + "/train/" + labels_file_name)
 	target.write("\n")
 
 
