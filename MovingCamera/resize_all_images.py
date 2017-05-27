@@ -23,7 +23,10 @@ png_pattern = re.compile(".png")
 
 cwd = os.getcwd()
 
-for filename in sorted(os.listdir(cwd + "/train")):
-  if png_pattern.search(filename) is not None:
-    print "found .png match: " + filename
-    resizeImage(cwd + "/train/" + filename)
+path_to_train = cwd + "/train"
+for root, dirs, files in os.walk(path_to_train):
+    for filename in sorted(files):
+        filename_full_path = os.path.join(root, filename)
+        if png_pattern.search(filename_full_path) is not None:
+            print "found .png match: " + filename_full_path
+            resizeImage(filename_full_path)
