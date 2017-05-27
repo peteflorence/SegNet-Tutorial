@@ -9,15 +9,24 @@ import re
 from PIL import Image
 
 def resizeImage(filename):
-  im_in = Image.open(filename)
   # adjust width and height to your needs
   width = 480
   height = 360
   # use one of these filter options to resize the image
   print filename
-  im_out = im_in.resize((width, height), Image.ANTIALIAS)    # best down-sizing filter
-  im_out.save(filename)
-
+  try:
+      im_in = Image.open(filename)
+      if (im_in.size[0] == 480 and im_in.size[1] == 360):
+          print "already 480 x 360"
+          return
+      im_out = im_in.resize((width, height), Image.ANTIALIAS)    # best down-sizing filter
+      im_out.save(filename)
+      print im_in.size, " --> ", im_out.size
+  except(KeyboardInterrupt):
+      quit()
+  except:
+      print "FAILED resizing"
+      os.system("mv " + filename + " " + filename + "failed_resize")
 
 png_pattern = re.compile(".png")
 
@@ -27,6 +36,6 @@ path_to_train = cwd + "/train"
 for root, dirs, files in os.walk(path_to_train):
     for filename in sorted(files):
         filename_full_path = os.path.join(root, filename)
-        if png_pattern.search(filename_full_path) is not None:
+        if filename_full_path.endswith(".png") and not filename_full_path.endswith("color_labels.png"):
             print "found .png match: " + filename_full_path
             resizeImage(filename_full_path)

@@ -7,13 +7,9 @@
 ###  Output: a .txt that lists of all *.rgb and *.labels pairs (for SegNet training)
 
 import os
-import re
 
 print "Opening the training set descriptor file..."
 target = open("train.txt", 'w')
-
-rgb_pattern = re.compile("rgb")
-labels_pattern = re.compile("labels")
 
 cwd = os.getcwd()
 
@@ -33,11 +29,11 @@ for root, dirs, files in os.walk(path_to_train):
         filename_full_path = os.path.join(root, filename)
         print filename_full_path
         
-        if rgb_pattern.search(filename_full_path) is not None:
+        if filename_full_path.endswith("rgb.png"):
     	    print "found rgb match"
     	    rgb_match = filename_full_path
 
-        if labels_pattern.search(filename_full_path) is not None:
+        if filename_full_path.endswith("labels.png") and not filename_full_path.endswith("color_labels.png"):
     	    print "found labels match"
     	    labels_match = filename_full_path
 
