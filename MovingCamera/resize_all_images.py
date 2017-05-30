@@ -5,7 +5,6 @@
 ###  Output: .png files resized to 480 x 360
 
 import os
-import re
 from PIL import Image
 
 def resizeImage(filename):
@@ -28,14 +27,15 @@ def resizeImage(filename):
       print "FAILED resizing"
       os.system("mv " + filename + " " + filename + "failed_resize")
 
-png_pattern = re.compile(".png")
+def resizeDirectory(dir_name):
+  cwd = os.getcwd()
+  path_to_dir = cwd + "/" + dir_name
+  for root, dirs, files in os.walk(path_to_dir):
+      for filename in sorted(files):
+          filename_full_path = os.path.join(root, filename)
+          if filename_full_path.endswith(".png") and not filename_full_path.endswith("color_labels.png"):
+              print "found .png match: " + filename_full_path
+              resizeImage(filename_full_path)
 
-cwd = os.getcwd()
-
-path_to_train = cwd + "/train"
-for root, dirs, files in os.walk(path_to_train):
-    for filename in sorted(files):
-        filename_full_path = os.path.join(root, filename)
-        if filename_full_path.endswith(".png") and not filename_full_path.endswith("color_labels.png"):
-            print "found .png match: " + filename_full_path
-            resizeImage(filename_full_path)
+resizeDirectory("train")
+resizeDirectory("test")
