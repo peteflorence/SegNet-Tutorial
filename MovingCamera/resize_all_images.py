@@ -18,7 +18,7 @@ def resizeImage(filename):
       if (im_in.size[0] == 480 and im_in.size[1] == 360):
           print "already 480 x 360"
           return
-      im_out = im_in.resize((width, height), Image.ANTIALIAS)    # best down-sizing filter
+      im_out = im_in.resize((width, height))    # best down-sizing filter
       im_out.save(filename)
       print im_in.size, " --> ", im_out.size
   except(KeyboardInterrupt):
