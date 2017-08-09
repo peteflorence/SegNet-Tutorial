@@ -10,6 +10,11 @@ from sklearn.preprocessing import normalize
 caffe_root = '/SegNet/caffe-segnet/' 			# Change this to the absolute directoy to SegNet Caffe
 import sys
 sys.path.insert(0, caffe_root + 'python')
+import matplotlib.cm as cm
+
+colors = cm.nipy_spectral(np.linspace(0, 1, 12))
+# print colors[0][:3]
+# quit()
 
 import caffe
 
@@ -45,21 +50,33 @@ for i in range(0, args.iter):
 	g_gt = label.copy()
 	b_gt = label.copy()
 
-	Sky = [128,128,128]
-	Building = [128,0,0]
-	Pole = [192,192,128]
-	Road_marking = [255,69,0]
-	Road = [128,64,128]
-	Pavement = [60,40,222]
-	Tree = [128,128,0]
-	SignSymbol = [192,128,128]
-	Fence = [64,64,128]
-	Car = [64,0,128]
-	Pedestrian = [64,64,0]
-	Bicyclist = [0,128,192]
-	Unlabelled = [0,0,0]
+	Unlabelled = [255,255,255]			# 0
+	OilBottle = colors[1][:3]*255		# 1
+	Phone = colors[2][:3]*255			# 2
+	Robot = colors[3][:3]*255			# 3
+	Toothpaste = [60,40,222]			# 4
+	TissueBox = colors[5][:3]*255		# 5
+	BlueFunnel = [192,128,128]			# 6
+	Drill = [64,64,128]					# 7
+	Car = [64,0,128]					# 8
+	Pedestrian = [64,64,0]				# 9
+	Bicyclist = [0,128,192]				# 10
+	Somethingelse = [10,0,10]			# 11
 
-	label_colours = np.array([Sky, Building, Pole, Road, Pavement, Tree, SignSymbol, Fence, Car, Pedestrian, Bicyclist, Unlabelled])
+	# Unlabelled = [255,255,255]			# 0
+	# OilBottle = [128,0,0]				# 1
+	# Phone = [255,0,0]					# 2
+	# Robot = [0,0,128]					# 3
+	# Toothpaste = [60,40,222]			# 4
+	# TissueBox = [128,128,0]				# 5
+	# BlueFunnel = [192,128,128]			# 6
+	# Drill = [64,64,128]					# 7
+	# Car = [64,0,128]					# 8
+	# Pedestrian = [64,64,0]				# 9
+	# Bicyclist = [0,128,192]				# 10
+	# Somethingelse = [10,0,10]			# 11
+
+	label_colours = np.array([Unlabelled, OilBottle, Phone, Robot, Toothpaste, TissueBox, BlueFunnel, Drill, Car, Pedestrian, Bicyclist, Somethingelse])
 	for l in range(0,11):
 		r[ind==l] = label_colours[l,0]
 		g[ind==l] = label_colours[l,1]
@@ -86,14 +103,24 @@ for i in range(0, args.iter):
 
 	#scipy.misc.toimage(rgb, cmin=0.0, cmax=255).save(IMAGE_FILE+'_segnet.png')
 
+	formatted_i = "%05d" % i
+
+	print "processing ", formatted_i
+
 	plt.figure()
 	plt.imshow(image,vmin=0, vmax=1)
+	plt.savefig("/home/peteflo/spartan/src/CorlDev/data/segnet_examples/mixed-5-scenes/" + formatted_i + "_01.png")
+	plt.close()
+
 	plt.figure()
 	plt.imshow(rgb_gt,vmin=0, vmax=1)
+	plt.savefig("/home/peteflo/spartan/src/CorlDev/data/segnet_examples/mixed-5-scenes/" + formatted_i + "_02.png")
+	plt.close()
+	
 	plt.figure()
 	plt.imshow(rgb,vmin=0, vmax=1)
-	plt.show()
-
+	plt.savefig("/home/peteflo/spartan/src/CorlDev/data/segnet_examples/mixed-5-scenes/" + formatted_i + "_03.png")
+	plt.close()
 
 print 'Success!'
 
